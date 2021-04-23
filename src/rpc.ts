@@ -1,6 +1,7 @@
 import { ApiPromise, WsProvider } from "@polkadot/api";
 import { Keyring } from "@polkadot/api";
 import { cryptoWaitReady } from "@polkadot/util-crypto";
+import waitPort = require("wait-port")
 
 let nonce = 0;
 
@@ -18,6 +19,7 @@ filterConsole([
 // Connect to a local Substrate node. This function wont resolve until connected.
 // TODO: Add a timeout where we know something went wrong so we don't wait forever.
 export async function connect(port: number, types: any) {
+	await waitPort({port});
 	const provider = new WsProvider("ws://127.0.0.1:" + port);
 	const api = new ApiPromise({ provider, types });
 	await api.isReady;
